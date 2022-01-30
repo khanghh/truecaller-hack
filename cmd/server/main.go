@@ -324,6 +324,29 @@ func handleGetConfiguration(c *gin.Context) {
 	c.String(http.StatusOK, jsonStr)
 }
 
+func handleGetSubscribtions(c *gin.Context) {
+	jsonStr := `{
+		"proStatus": {
+			"credits": 0,
+			"start": "1970-01-01T00:00:00Z",
+			"expires": "2970-01-01T00:00:00Z",
+			"gracePeriodExpires": "2970-01-01T00:00:00Z",
+			"renewable": false,
+			"level": 100,
+			"isFreeTrial": false,
+			"isExpired": false,
+			"isGracePeriodExpired": false,
+			"contactRequestQuota": {
+				"month": 30,
+				"Year": 365
+			},
+			"inAppPurchaseAllowed": true
+		}
+	}`
+	c.Header("Content-Type", "application/json")
+	c.String(http.StatusOK, jsonStr)
+}
+
 func handleEdgeLocations(c *gin.Context) {
 	jsonTmp := `{
 		"data": {
@@ -450,7 +473,7 @@ func handleEdgeLocations(c *gin.Context) {
 			},
 			"premium": {
 			  "edges": [
-				"premium-asia-south1.truecaller.com"
+				"%s"
 			  ]
 			},
 			"notifications5": {
@@ -735,6 +758,7 @@ func main() {
 
 	router.GET("/v2", handleEdgeLocations)
 	router.POST("/v2/sendOnboardingOtp", handleSendOnboardingOtp)
+	router.GET("/v2/subscriptions", handleGetSubscribtions)
 	router.POST("/v1/verifyOnboardingOtp", handleVerifyOnboardingOtp)
 	router.PUT("/v1/installation")
 	router.GET("/v1/configuration", handleGetConfiguration)
