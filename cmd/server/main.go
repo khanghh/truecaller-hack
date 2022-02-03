@@ -747,7 +747,87 @@ func handleEdgeLocations(c *gin.Context) {
 		},
 		"ttl": 43200
 	  }`
-	jsonStr := fmt.Sprintf(jsonTmp, hostName)
+	jsonStr := fmt.Sprintf(jsonTmp, hostName, hostName)
+	c.Header("Content-Type", "application/json")
+	c.String(http.StatusOK, jsonStr)
+}
+
+func handleGetGooglePlaySubscriptions(c *gin.Context) {
+	jsonStr := `{
+		"products": [
+			{
+				"product": "gold_yearly_subscription",
+				"contacts": 365,
+				"minutes": 525600,
+				"level": "gold",
+				"isWinback": false,
+				"type": "subscription",
+				"kind": "goldyearly",
+				"paymentProvider": "GooglePlay"
+			},
+			{
+				"product": "1year_premium_01",
+				"contacts": 365,
+				"minutes": 525600,
+				"level": "regularv1",
+				"isWinback": false,
+				"type": "consumable",
+				"kind": "consumableyearly",
+				"paymentProvider": "GooglePlay"
+			},
+			{
+				"product": "truecaller_premium_monthly_variant0",
+				"contacts": 30,
+				"minutes": 43200,
+				"level": "regular",
+				"isWinback": false,
+				"type": "subscription",
+				"kind": "subsmonthly",
+				"paymentProvider": "GooglePlay"
+			},
+			{
+				"product": "truecaller_premium_yearly_variant0",
+				"contacts": 365,
+				"minutes": 525600,
+				"level": "regular",
+				"isWinback": false,
+				"type": "subscription",
+				"kind": "subsyearly",
+				"paymentProvider": "GooglePlay"
+			},
+			{
+				"product": "1year_gold_01",
+				"contacts": 365,
+				"minutes": 525600,
+				"level": "gold",
+				"isWinback": false,
+				"type": "consumable",
+				"kind": "consumablegoldyearly",
+				"paymentProvider": "GooglePlay"
+			},
+			{
+				"product": "truecaller_premium_3months_t3_variant0",
+				"contacts": 90,
+				"minutes": 129600,
+				"level": "regular",
+				"isWinback": false,
+				"type": "subscription",
+				"kind": "subsquarterly",
+				"paymentProvider": "GooglePlay"
+			},
+			{
+				"product": "truecaller_premium_yearly_welcome",
+				"contacts": 365,
+				"minutes": 525600,
+				"level": "regular",
+				"isWinback": false,
+				"type": "subscription",
+				"kind": "subswelcomeyearly",
+				"paymentProvider": "GooglePlay"
+			}
+		],
+		"ttl": 21600000
+	}`
 	c.Header("Content-Type", "application/json")
 	c.String(http.StatusOK, jsonStr)
 }
@@ -758,7 +838,8 @@ func main() {
 
 	router.GET("/v2", handleEdgeLocations)
 	router.POST("/v2/sendOnboardingOtp", handleSendOnboardingOtp)
-	router.GET("/v2/subscriptions", handleGetSubscribtions)
+	router.GET("/v2/subscriptions/status", handleGetSubscribtions)
+	router.GET("/v2/products/googleplay", handleGetGooglePlaySubscriptions)
 	router.POST("/v1/verifyOnboardingOtp", handleVerifyOnboardingOtp)
 	router.PUT("/v1/installation")
 	router.GET("/v1/configuration", handleGetConfiguration)
